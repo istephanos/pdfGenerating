@@ -1,0 +1,129 @@
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using PdfSharp.Drawing.Layout;  
+
+// a se adauga in Program.cs urmatoarea linie de cod : System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+private async void generarePdf()
+        {
+            await APIMethods.DateMatrita(listMatrite);
+
+            PdfDocument document = new PdfDocument();
+            document.Info.Title = "Lista matrite";
+
+            int elementsPerPage = 21; // Numărul maxim de elemente pe pagină
+            int currentPage = 1;
+
+            PdfPage page = document.AddPage();
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Adăugați aici codul pentru antetul paginii, similar cu prima pagină
+            // Generați antetul pentru prima pagină
+            //generare HEADER Document
+
+            gfx.DrawString("Lista matrite", new XFont("Arial", 40, XFontStyle.Bold), XBrushes.Red, new XPoint(280, 80));
+            gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 200)), new XPoint(20, 90), new XPoint(760, 90));
+
+
+            //generare HEADER TABEL
+
+            gfx.DrawString("Model", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(20, 110));
+            gfx.DrawString("Serie", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(20 + 65, 110));
+            gfx.DrawString("Data", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(20 + 65 * 2, 110));
+            gfx.DrawString("Fabricant", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 3 + 10, 110));
+            gfx.DrawString("Material", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(15 + 65 * 4, 110));
+            gfx.DrawString("Utilaj", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(17 + 65 * 5, 110));
+            gfx.DrawString("Locatie", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 6, 110));
+            gfx.DrawString("Cicluri", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 7 - 5, 110));
+            gfx.DrawString("Reparatie", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 8 - 10, 110));
+            gfx.DrawString("UltimaData", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 9, 110));
+            gfx.DrawString("Actual", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(10 + 65 * 10, 110));
+            gfx.DrawString("Revizii", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 11, 110));
+
+            gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 200)), new XPoint(20, 120), new XPoint(760, 120));
+
+
+            int currentYposition_values = 150;
+            int currentYposition_line = 170;
+
+            for (int i = 0; i < listMatrite.Count; i++)
+            {
+                if (i % elementsPerPage == 0)
+                {
+                    if (currentPage > 1)
+                    {
+                        page = document.AddPage();
+                        page.Orientation = PdfSharp.PageOrientation.Landscape;
+                        gfx = XGraphics.FromPdfPage(page);
+
+                        // Adăugați aici codul pentru antetul paginii, similar cu prima pagină
+                        // Generați antetul pentru paginile ulterioare
+                        //generare HEADER Document
+
+                        gfx.DrawString("Lista matrite", new XFont("Arial", 40, XFontStyle.Bold), XBrushes.Red, new XPoint(280, 80));
+                        gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 200)), new XPoint(20, 90), new XPoint(760, 90));
+
+
+                        //generare HEADER TABEL
+
+                        gfx.DrawString("Model", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(20, 110));
+                        gfx.DrawString("Serie", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(20 + 65, 110));
+                        gfx.DrawString("Data", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(20 + 65 * 2, 110));
+                        gfx.DrawString("Fabricant", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 3 + 10, 110));
+                        gfx.DrawString("Material", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(15 + 65 * 4, 110));
+                        gfx.DrawString("Utilaj", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(17 + 65 * 5, 110));
+                        gfx.DrawString("Locatie", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 6, 110));
+                        gfx.DrawString("Cicluri", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 7 - 5, 110));
+                        gfx.DrawString("Reparatie", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 8 - 10, 110));
+                        gfx.DrawString("UltimaData", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 9 , 110));
+                        gfx.DrawString("Actual", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(10 + 65 * 10, 110));
+                        gfx.DrawString("Revizii", new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 11, 110));
+
+                        gfx.DrawLine(new XPen(XColor.FromArgb(50, 30, 200)), new XPoint(20, 120), new XPoint(760, 120));
+
+                        currentYposition_values = 150;
+                        currentYposition_line = 170;
+                    }
+
+                    gfx.DrawString(currentPage.ToString(), new XFont("Arial", 12, XFontStyle.Bold), XBrushes.Black, new XPoint(380, 590));
+
+                    currentPage++;
+
+                }
+
+                string strDataFabr = listMatrite[i].DATA_FABRICATIE.ToString();
+                string substrDataFabr = strDataFabr.Substring(0, 10);
+
+                string strUltimaData = string.Empty;
+                if (listMatrite[i].ULTIMA_DATA == null)
+                {
+                    strUltimaData = "dd.mm.YYYY";
+                }
+                else
+                {
+                    strUltimaData = listMatrite[i].ULTIMA_DATA.ToString();
+                }
+
+                string substrUltimaData = strUltimaData.Substring(0, 10);
+
+
+                gfx.DrawString(listMatrite[i].MODEL, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(20, currentYposition_values));
+                gfx.DrawString(listMatrite[i].SERIE_MATRITA, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(10 + 65, currentYposition_values));
+                gfx.DrawString(substrDataFabr, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(10 + 65 * 2, currentYposition_values));
+                gfx.DrawString(listMatrite[i].FABRICANT, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(10 + 65 * 3, currentYposition_values));
+                gfx.DrawString(listMatrite[i].MATERIAL, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(20 + 65 * 4, currentYposition_values));
+                gfx.DrawString(listMatrite[i].DENUMIRE_UTILAJ, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(17 + 65 * 5, currentYposition_values));
+                gfx.DrawString(listMatrite[i].LOCATIE, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 6 +5, currentYposition_values));
+                gfx.DrawString(listMatrite[i].NRCICLURI.ToString(), new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 7, currentYposition_values));
+                gfx.DrawString(listMatrite[i].REPARATIE.ToString(), new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 8, currentYposition_values));
+                gfx.DrawString(substrUltimaData, new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 9 , currentYposition_values));
+                gfx.DrawString(listMatrite[i].ACTUAL.ToString(), new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(20 + 65 * 10, currentYposition_values)); ;
+                gfx.DrawString(listMatrite[i].NUMAR_REVIZII.ToString(), new XFont("Arial", 9, XFontStyle.Bold), XBrushes.Black, new XPoint(65 * 11 + 15, currentYposition_values));
+
+                currentYposition_values += 20;
+                currentYposition_line += 20;
+            }
+            
+            document.Save("D:\\ListaMatrite.pdf");
+        }
